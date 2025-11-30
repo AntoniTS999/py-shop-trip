@@ -17,7 +17,8 @@ def shop_trip() -> None:
 
         for shop in shops:
             cost = cus.shopping_cost_in(shop)
-            print(f"{cus.name}'s trip to {shop.name} costs {cost:.2f}")
+            print(f"{cus.name}'s trip "
+                  f"to the {shop.name} costs {round(cost, 2)}")
             trip_prices[shop] = cost
 
         # find cheapest shop
