@@ -38,4 +38,5 @@ def shop_trip() -> None:
         print(f"{cus.name} rides home")
         # subtract money
         cus.money -= min_cost
-        print(f"{cus.name} now has {round(cus.money, 2)} dollars")
+        cus.money = round(cus.money, 2)  # obowiązkowe!
+        print(f"{cus.name} now has {cus.money} dollars")
