@@ -17,11 +17,16 @@ def shop_trip() -> None:
 
         for shop in shops:
             cost = cus.shopping_cost_in(shop)
-            print(f"{cus.name}'s trip "
-                  f"to the {shop.name} costs {round(cost, 2)}")
-            trip_prices[shop] = cost
+            if cost is not None:
+                print(f"{cus.name}'s trip to "
+                      f"the {shop.name} costs {round(cost, 2)}")
+                trip_prices[shop] = cost
 
-        # find cheapest shop
+        if not trip_prices:
+            print(f"{cus.name} doesn't have "
+                  f"enough money to make a purchase in any shop")
+            continue
+
         shop_to_go = min(trip_prices, key=trip_prices.get)
         min_cost = trip_prices[shop_to_go]
 
@@ -37,7 +42,6 @@ def shop_trip() -> None:
         shop_to_go.receipt(cus)
 
         print(f"{cus.name} rides home")
-        # subtract money
         cus.money -= min_cost
         cus.money = round(cus.money, 2)
         print(f"{cus.name} now has {cus.money} dollars")
