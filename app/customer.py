@@ -1,7 +1,14 @@
 from app.car import Car
+from app.shop import Shop
+
 
 class Customer:
-    def __init__(self, name, product_cart, location, money, car):
+    def __init__(self,
+                 name: str,
+                 product_cart: dict,
+                 location: list,
+                 money: int,
+                 car: dict) -> None:
         self.name = name
         self.product_cart = product_cart
         self.location = location
@@ -9,10 +16,10 @@ class Customer:
         self.car = Car(car["brand"], car["fuel_consumption"])
 
     @staticmethod
-    def distance(a, b):
-        return ((a[0]-b[0])**2 + (a[1]-b[1])**2) ** 0.5
+    def distance(ar: list, ba: list) -> float:
+        return ((ar[0] - ba[0]) ** 2 + (ar[1] - ba[1]) ** 2) ** 0.5
 
-    def shopping_cost_in(self, shop):
+    def shopping_cost_in(self, shop: Shop) -> float:
         # distance to shop and back
         dist = self.distance(self.location, shop.location)
         fuel_to_shop = self.car.trip_cost(dist)
@@ -20,9 +27,9 @@ class Customer:
 
         # price of products
         product_cost = 0
-        for p, amount in self.product_cart.items():
-            if p not in shop.products:
+        for per, amount in self.product_cart.items():
+            if per not in shop.products:
                 return None
-            product_cost += shop.products[p] * amount
+            product_cost += shop.products[per] * amount
 
         return fuel_to_shop + fuel_home + product_cost

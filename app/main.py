@@ -2,34 +2,39 @@ from app.configuration import config
 from app.customer import Customer
 from app.shop import Shop
 
-def shop_trip():
-    customers = [Customer(**c) for c in config["customers"]]
-    shops = [Shop(s["name"], s["location"], s["products"]) for s in config["shops"]]
 
-    for c in customers:
-        print(f"{c.name} has {c.money} dollars")
+def shop_trip() -> None:
+    customers = [Customer(**c) for c in config["customers"]]
+    shops = [Shop(s["name"],
+                  s["location"],
+                  s["products"])
+             for s in config["shops"]]
+
+    for cus in customers:
+        print(f"{cus.name} has {cus.money} dollars")
 
         trip_prices = {}
-        for s in shops:
-            cost = c.shopping_cost_in(s)
-            print(f"{c.name}'s trip to {s.name} costs {round(cost, 2)}")
-            trip_prices[s] = cost
+        for ser in shops:
+            cost = cus.shopping_cost_in(ser)
+            print(f"{cus.name}'s trip to {ser.name} costs {round(cost, 2)}")
+            trip_prices[ser] = cost
 
         # find cheapest shop
         shop_to_go = min(trip_prices, key=trip_prices.get)
         min_cost = trip_prices[shop_to_go]
 
-        if c.money < min_cost:
-            print(f"{c.name} doesn't have enough money to make a purchase in any shop")
+        if cus.money < min_cost:
+            print(f"{cus.name} doesn't have "
+                  f"enough money to make a purchase in any shop")
             continue
 
-        print(f"{c.name} rides to {shop_to_go.name}")
-        c.location = shop_to_go.location[:]
+        print(f"{cus.name} rides to {shop_to_go.name}")
+        cus.location = shop_to_go.location[:]
 
         # print receipt
-        shop_to_go.receipt(c)
+        shop_to_go.receipt(cus)
 
-        print(f"{c.name} rides home")
+        print(f"{cus.name} rides home")
         # subtract money
-        c.money -= min_cost
-        print(f"{c.name} now has {round(c.money, 2)} dollars")
+        cus.money -= min_cost
+        print(f"{cus.name} now has {round(cus.money, 2)} dollars")
