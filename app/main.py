@@ -14,11 +14,11 @@ def shop_trip() -> None:
         print(f"{cus.name} has {cus.money} dollars")
 
         trip_prices = {}
-        for ser in shops:
-            cost = cus.shopping_cost_in(ser)
-            print(f"{cus.name}'s trip to "
-                  f"the {ser.name} costs {round(cost, 2)}")
-            trip_prices[ser] = cost
+
+        for shop in shops:
+            cost = cus.shopping_cost_in(shop)
+            print(f"{cus.name}'s trip to {shop.name} costs {cost:.2f}")
+            trip_prices[shop] = cost
 
         # find cheapest shop
         shop_to_go = min(trip_prices, key=trip_prices.get)
@@ -38,5 +38,5 @@ def shop_trip() -> None:
         print(f"{cus.name} rides home")
         # subtract money
         cus.money -= min_cost
-        cus.money = round(cus.money, 2)  # obowiązkowe!
+        cus.money = round(cus.money, 2)
         print(f"{cus.name} now has {cus.money} dollars")
