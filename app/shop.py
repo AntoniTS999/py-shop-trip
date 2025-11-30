@@ -1,3 +1,4 @@
+from __future__ import annotations
 import datetime
 
 
@@ -14,10 +15,14 @@ class Shop:
         print("You have bought:")
 
         total = 0
-        for product, amount in customer.product_cart.items():
-            cost = self.products[product] * amount
+        for product_name, amount in customer.product_cart.items():
+            cost = self.products[product_name] * amount
             total += cost
-            print(f"{amount} {product}s for {cost:g} dollars")
 
-        print(f"Total cost is {total:g} dollars")
+            # formatowanie liczb
+            cost_str = f"{cost:.2f}".rstrip("0").rstrip(".")
+            print(f"{amount} {product_name}s for {cost_str} dollars")
+
+        total_str = f"{total:.2f}".rstrip("0").rstrip(".")
+        print(f"Total cost is {total_str} dollars")
         print("See you again!\n")

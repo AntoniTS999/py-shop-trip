@@ -4,51 +4,55 @@ from app.shop import Shop
 
 
 def shop_trip() -> None:
-    all_customers = [Customer(**customer_data)
-                     for customer_data in config["customers"]]
-    all_shops = [Shop(shop_data["name"],
-                      shop_data["location"],
-                      shop_data["products"])
-                 for shop_data in config["shops"]]
+    customers = [Customer(**customer_data)
+                 for customer_data in config["customers"]]
+    shops = [Shop(shop_data["name"],
+                  shop_data["location"],
+                  shop_data["products"])
+             for shop_data in config["shops"]]
 
-    for current_customer in all_customers:
-        print(f"{current_customer.name} "
-              f"has {current_customer.money:g} dollars")
+    for customer in customers:
+        print(f"{customer.name} "
+              f"has {customer.money} dollars")
 
-        trip_costs = {}
+        trip_prices = {}
 
-        for current_shop in all_shops:
-            cost = current_customer.shopping_cost_in(current_shop)
+        for shop in shops:
+            cost = customer.shopping_cost_in(shop)
             if cost is not None:
-                # używamy :.2f do dokładnie 2 miejsc po przecinku
-                formatted_cost = f"{cost:.2f}".rstrip("0").rstrip(".")
-                print(f"{current_customer.name}'s "
-                      f"trip to the {current_shop.name} "
-                      f"costs {formatted_cost}")
-                trip_costs[current_shop] = cost
+                cost_str = f"{cost:.2f}".rstrip("0").rstrip(".")
 
-        if not trip_costs:
-            print(f"{current_customer.name} "
-                  f"doesn't have enough money "
-                  f"to make a purchase in any shop")
+                if shop.name.startswith("Shop '"):
+                    print(f"{customer.name}'s "
+                          f"trip to {shop.name} costs {cost_str}")
+                else:
+                    print(f"{customer.name}'s trip "
+                          f"to the {shop.name} costs {cost_str}")
+                trip_prices[shop] = cost
+
+        if not trip_prices:
+            print(f"{customer.name} doesn't have "
+                  f"enough money to make a purchase in any shop")
             continue
 
-        cheapest_shop = min(trip_costs, key=trip_costs.get)
-        cheapest_cost = trip_costs[cheapest_shop]
+        # wybór najtańszego sklepu
+        shop_to_go = min(trip_prices, key=trip_prices.get)
+        min_cost = trip_prices[shop_to_go]
 
-        if current_customer.money < cheapest_cost:
-            print(f"{current_customer.name} doesn't "
-                  f"have enough money to make a purchase in any shop")
+        if customer.money < min_cost:
+            print(f"{customer.name} doesn't have "
+                  f"enough money to make a purchase in any shop")
             continue
 
-        print(f"{current_customer.name} rides to {cheapest_shop.name}")
-        current_customer.location = cheapest_shop.location[:]
+        # podróż do sklepu
+        print(f"{customer.name} rides to {shop_to_go.name}")
+        customer.location = shop_to_go.location[:]
 
-        # print receipt
-        cheapest_shop.receipt(current_customer)
+        # wydruk paragonu
+        shop_to_go.receipt(customer)
 
-        print(f"{current_customer.name} rides home")
-        current_customer.money -= cheapest_cost
-        formatted_money = (f"{current_customer.money:.2f}"
-                           .rstrip("0").rstrip("."))
-        print(f"{current_customer.name} now has {formatted_money} dollars")
+        print(f"{customer.name} rides home")
+        customer.money -= min_cost
+        customer.money = round(customer.money, 2)
+        money_str = f"{customer.money:.2f}".rstrip("0").rstrip(".")
+        print(f"{customer.name} now has {money_str} dollars\n")
