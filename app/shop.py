@@ -17,7 +17,17 @@ class Shop:
         for product, amount in customer.product_cart.items():
             cost = self.products[product] * amount
             total += cost
-            print(f"{amount} {product}s for {cost} dollars")
 
-        print(f"Total cost is {total} dollars")
+            cost_rounded = round(cost, 2)
+
+            if cost_rounded == int(cost_rounded):
+                cost_rounded = int(cost_rounded)
+
+            print(f"{amount} {product}s for {cost_rounded} dollars")
+
+        total_rounded = round(total, 2)
+        if total_rounded == int(total_rounded):
+            total_rounded = int(total_rounded)
+
+        print(f"Total cost is {total_rounded} dollars")
         print("See you again!")
