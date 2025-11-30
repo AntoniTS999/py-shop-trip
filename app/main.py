@@ -20,13 +20,17 @@ def shop_trip() -> None:
         for current_shop in all_shops:
             cost = current_customer.shopping_cost_in(current_shop)
             if cost is not None:
+                # używamy :.2f do dokładnie 2 miejsc po przecinku
+                formatted_cost = f"{cost:.2f}".rstrip("0").rstrip(".")
                 print(f"{current_customer.name}'s "
-                      f"trip to the {current_shop.name} costs {cost:g}")
+                      f"trip to the {current_shop.name} "
+                      f"costs {formatted_cost}")
                 trip_costs[current_shop] = cost
 
         if not trip_costs:
-            print(f"{current_customer.name} doesn't "
-                  f"have enough money to make a purchase in any shop")
+            print(f"{current_customer.name} "
+                  f"doesn't have enough money "
+                  f"to make a purchase in any shop")
             continue
 
         cheapest_shop = min(trip_costs, key=trip_costs.get)
@@ -45,5 +49,6 @@ def shop_trip() -> None:
 
         print(f"{current_customer.name} rides home")
         current_customer.money -= cheapest_cost
-        print(f"{current_customer.name} "
-              f"now has {current_customer.money:g} dollars")
+        formatted_money = (f"{current_customer.money:.2f}"
+                           .rstrip("0").rstrip("."))
+        print(f"{current_customer.name} now has {formatted_money} dollars")
