@@ -1,4 +1,8 @@
+import os
 import json
 
-with open("config.json", "r", encoding="utf-8") as config_file:
-    config = json.load(config_file)
+BASE_DIR = os.path.dirname(__file__)
+CONFIG_PATH = os.path.join(BASE_DIR, "config.json")
+
+with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    config = json.load(f)

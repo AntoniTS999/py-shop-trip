@@ -1,7 +1,5 @@
 import datetime
 
-from app.customer import Customer
-
 
 class Shop:
     def __init__(self, name: str, location: list, products: dict) -> None:
@@ -9,7 +7,7 @@ class Shop:
         self.location = location
         self.products = products
 
-    def receipt(self, customer: Customer) -> None:
+    def receipt(self, customer: str) -> None:
         now = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         print(f"\nDate: {now}")
         print(f"Thanks, {customer.name}, for your purchase!")

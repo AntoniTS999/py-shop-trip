@@ -1,5 +1,5 @@
 from app.configuration import config
-from app.customer import Customer
+from app.customers import Customer
 from app.shop import Shop
 
 
