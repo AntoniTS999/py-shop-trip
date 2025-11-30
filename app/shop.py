@@ -8,7 +8,6 @@ class Shop:
         self.products = products
 
     def receipt(self, customer: str) -> None:
-
         now = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         print(f"\nDate: {now}")
         print(f"Thanks, {customer.name}, for your purchase!")
@@ -18,16 +17,7 @@ class Shop:
         for product, amount in customer.product_cart.items():
             cost = self.products[product] * amount
             total += cost
+            print(f"{amount} {product}s for {cost:g} dollars")
 
-            cost = round(cost, 2)
-            if cost == int(cost):
-                cost = int(cost)
-
-            print(f"{amount} {product}s for {cost} dollars")
-
-        total = round(total, 2)
-        if total == int(total):
-            total = int(total)
-
-        print(f"Total cost is {total} dollars")
-        print("See you again!")
+        print(f"Total cost is {total:g} dollars")
+        print("See you again!\n")
